@@ -1,13 +1,14 @@
 package app
 
 import (
+	"os"
+
 	"github.com/obukhov/redis-inventory/src/adapter"
 	"github.com/obukhov/redis-inventory/src/logger"
 	"github.com/obukhov/redis-inventory/src/renderer"
 	"github.com/obukhov/redis-inventory/src/scanner"
 	"github.com/obukhov/redis-inventory/src/trie"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var indexCmd = &cobra.Command{
@@ -26,7 +27,7 @@ var indexCmd = &cobra.Command{
 
 		redisScanner := scanner.NewScanner(
 			adapter.NewRedisService(clientSource),
-			adapter.NewPrettyProgressWriter(os.Stdout),
+			adapter.NewPrettyProgressWriter(os.Stderr),
 			consoleLogger,
 		)
 

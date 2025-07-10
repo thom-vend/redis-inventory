@@ -1,9 +1,12 @@
 package adapter
 
 import (
-	"github.com/jedib0t/go-pretty/v6/progress"
 	"io"
+	"os"
 	"time"
+
+	"github.com/jedib0t/go-pretty/v6/progress"
+	"github.com/mattn/go-isatty"
 )
 
 // ProgressWriter abstraction of progress writer
@@ -49,10 +52,27 @@ func (p *PrettyProgressWriter) init(output io.Writer) {
 	p.pw.SetSortBy(progress.SortByPercentDsc)
 	p.pw.SetStyle(progress.StyleDefault)
 	p.pw.SetTrackerPosition(progress.PositionRight)
-	p.pw.SetUpdateFrequency(time.Millisecond * 10)
-	p.pw.Style().Colors = progress.StyleColorsExample
 	p.pw.Style().Options.PercentFormat = "%4.1f%%"
+
+	if p.isTerminal() {
+		p.pw.SetUpdateFrequency(time.Millisecond * 100)
+		p.pw.Style().Colors = progress.StyleColorsExample
+	} else {
+		p.pw.SetUpdateFrequency(time.Second * 30)
+		p.pw.SetStyle(progress.Style{
+			Name:   "log-friendly",
+			Chars:  progress.StyleCharsDefault,
+			Colors: progress.StyleColors{},
+			Options: progress.StyleOptions{
+				Separator: " ",
+			},
+		})
+	}
 	p.pw.SetOutputWriter(output)
+}
+
+func (p *PrettyProgressWriter) isTerminal() bool {
+	return isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd())
 }
 
 // Start initiates progress writing progress, if total is unknown should be zero

@@ -37,6 +37,7 @@ func (s *RedisScanner) Scan(options adapter.ScanOptions, result *trie.Trie) {
 	if options.Pattern == "*" || options.Pattern == "" {
 		totalCount = s.getKeysCount()
 	}
+	s.logger.Info().Msgf("Start scanning with options: %+v, total keys count: %d", options, totalCount)
 
 	s.scanProgress.Start(totalCount)
 	for key := range s.redisService.ScanKeys(context.Background(), options) {

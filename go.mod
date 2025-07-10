@@ -7,6 +7,7 @@ require (
 	github.com/alicebob/miniredis/v2 v2.18.0
 	github.com/hetiansu5/urlquery v1.2.7
 	github.com/jedib0t/go-pretty/v6 v6.2.7
+	github.com/mattn/go-isatty v0.0.20
 	github.com/mediocregopher/radix/v4 v4.0.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/rs/zerolog v1.26.1
