@@ -13,3 +13,6 @@ docs:## Generate docs for cobra commands
 
 build:## Build docker services
 	go build -o build/redis-inventory main.go
+
+release:
+	./go_build_release.sh
